@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Narratrix — Interactive Storytelling</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="grain-overlay"></div>
+
+  <!-- ══ SPLASH / CREATE CHARACTER ══ -->
+  <section id="screen-create" class="screen active">
+    <div class="create-bg-art">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+    </div>
+    <div class="create-card">
+      <div class="logo-block">
+        <span class="logo-eye">✦</span>
+        <h1 class="logo-title">Narratrix</h1>
+        <p class="logo-sub">Forge your story. Shape your character.</p>
+      </div>
+
+      <form id="form-create" autocomplete="off">
+        <div class="field-group">
+          <label for="char-name">Character Name</label>
+          <input id="char-name" type="text" placeholder="e.g. Seraphine Voss" maxlength="32" required />
+        </div>
+
+        <div class="field-group">
+          <label for="char-personality">Personality</label>
+          <select id="char-personality">
+            <option value="brave">⚔️ Brave &amp; Bold</option>
+            <option value="cunning">🎭 Cunning &amp; Witty</option>
+            <option value="gentle">🌿 Gentle &amp; Wise</option>
+            <option value="dark">🌑 Dark &amp; Brooding</option>
+            <option value="chaotic">⚡ Chaotic &amp; Wild</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>Genre</label>
+          <div class="genre-grid" id="genre-grid">
+            <button type="button" class="genre-btn active" data-genre="fantasy">🏰 Fantasy</button>
+            <button type="button" class="genre-btn" data-genre="sci-fi">🚀 Sci-Fi</button>
+            <button type="button" class="genre-btn" data-genre="horror">💀 Horror</button>
+            <button type="button" class="genre-btn" data-genre="mystery">🔍 Mystery</button>
+            <button type="button" class="genre-btn" data-genre="romance">🌹 Romance</button>
+            <button type="button" class="genre-btn" data-genre="western">🤠 Western</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="btn-begin">
+          <span>Begin the Story</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </form>
+
+      <div id="saved-notice" class="saved-notice hidden">
+        <span>✦ Saved story found.</span>
+        <button id="btn-resume">Resume Journey</button>
+        <button id="btn-new-story">Start Fresh</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ MAIN STORY SCREEN ══ -->
+  <section id="screen-story" class="screen">
+    <header class="app-header">
+      <div class="header-left">
+        <span class="header-logo">✦ Narratrix</span>
+      </div>
+      <div class="header-center" id="char-display">
+        <span id="hdr-name">—</span>
+        <span class="hdr-sep">·</span>
+        <span id="hdr-genre">—</span>
+        <span class="hdr-sep">·</span>
+        <span id="hdr-emotion" class="emotion-badge">😐 Neutral</span>
+      </div>
+      <div class="header-right">
+        <button class="icon-btn" id="btn-chat-toggle" title="Open Chat">💬</button>
+        <button class="icon-btn" id="btn-reset" title="New Story">↺</button>
+      </div>
+    </header>
+
+    <main class="story-main">
+      <!-- Story Panel -->
+      <div class="story-panel" id="story-panel">
+        <div class="chapter-label" id="chapter-label">Chapter I</div>
+
+        <article class="story-card" id="story-card">
+          <div class="story-text" id="story-text">
+            <p class="placeholder-text">Your story is being woven…</p>
+          </div>
+          <blockquote class="story-dialogue" id="story-dialogue"></blockquote>
+        </article>
+
+        <div class="choices-block" id="choices-block">
+          <p class="choices-label">What do you do?</p>
+          <div class="choices-list" id="choices-list"></div>
+        </div>
+
+        <div class="story-actions">
+          <button class="btn-secondary" id="btn-generate">✦ Generate New Scene</button>
+          <button class="btn-secondary" id="btn-emotion">🎲 Random Emotion</button>
+        </div>
+      </div>
+
+      <!-- Chat Panel -->
+      <aside class="chat-panel" id="chat-panel">
+        <div class="chat-header">
+          <span id="chat-char-name">Character</span>
+          <span class="chat-sub">speaks…</span>
+          <button class="icon-btn chat-close" id="btn-chat-close">✕</button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+          <div class="chat-intro">
+            <p>Send a message and your character will reply in their own voice.</p>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input id="chat-input" type="text" placeholder="Speak to them…" maxlength="200" />
+          <button class="btn-send" id="btn-send">↑</button>
+        </div>
+      </aside>
+    </main>
+
+    <!-- History Drawer (bottom) -->
+    <div class="history-bar" id="history-bar">
+      <button class="history-toggle" id="btn-history-toggle">
+        <span>📜 Story History</span>
+        <span class="history-arrow">▲</span>
+      </button>
+      <div class="history-list" id="history-list"></div>
+    </div>
+  </section>
+
+  <script src="storage.js"></script>
+  <script src="story.js"></script>
+  <script src="chat.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
